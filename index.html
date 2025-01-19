@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar API REST com TypeScript e Fastify</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background: #292b3b;
+            color: #fff;
+            padding: 5px 0;
+            text-align: center;
+        }
+        header h1{
+            font-size: 2rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1, h2 {
+            color: #ffffff;
+        }
+
+        pre {
+            background: #f4f4f9;
+            padding: 1rem;
+            overflow-x: auto;
+            border-left: 4px solid #0078d7;
+        }
+
+        code {
+            font-family: "Courier New", Courier, monospace;
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        ul {
+            list-style: disc inside;
+            margin: 1rem 0;
+        }
+
+        footer {
+            text-align: center;
+            margin: 2rem 0 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding: 0.5rem;
+            }
+
+            pre {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Como Criar uma API REST com TypeScript e Fastify</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Estrutura do Projeto</h2>
+            <p>Antes de começar, organize o projeto com a seguinte estrutura:</p>
+            <pre>
+<code>project-root
+├── src
+│   ├── server.ts
+│   └── user.ts
+└── package.json</code>
+            </pre>
+        </section>
+        <section>
+            <h2>Passo 1: Configuração do Projeto</h2>
+            <h3>1.1 Inicializar o Projeto</h3>
+            <p>Comece inicializando o projeto com <code>npm</code>:</p>
+            <pre><code>npm init -y</code></pre>
+            <h3>1.2 Instalar Dependências</h3>
+            <p>Instale as dependências principais:</p>
+            <pre><code>npm install fastify axios</code></pre>
+            <p>Instale as dependências de desenvolvimento:</p>
+            <pre><code>npm install -D typescript @types/node tsx</code></pre>
+            <p>Configurar o tsconfig.json
+            </p>
+            <pre><code>npx tsc --init</code></pre>
+           <pre><code>
+{
+    "compilerOptions": {
+        "target": "ES6",                       
+        "module": "NodeNext",                                    
+        "strict": true,                          
+        "esModuleInterop": true,                 
+    },
+    "include": ["src/**/*"],                        
+}
+</code></pre>
+        </section>
+        <section>
+            <h2>Passo 2: Criar o Servidor com Fastify</h2>
+            <p>No arquivo <code>server.ts</code>, configure o servidor e registre as rotas:</p>
+            <pre><code>import fastify from "fastify";
+import { userRoutes } from "./user";
+
+const server = fastify();
+
+server.get('/', (request, reply) => {
+    reply.send('Consumindo-Api-com-TYpescript-e-Fastify');
+});
+
+server.register(userRoutes);
+
+server.listen({ port: 3333 }, async (err, address) => {
+    if (err) {
+        console.log(err);
+    }
+    console.log(`Server listening at ${address}`);
+});</code></pre>
+        </section>
+        <section>
+            <h2>Passo 3: Criar Rotas para Consumir a API JSONPlaceholder</h2>
+            <p>No arquivo <code>user.ts</code>, implemente as rotas para interagir com os dados:</p>
+            <pre><code>import { FastifyInstance } from "fastify";
+import axios from "axios";
+
+export async function userRoutes(app: FastifyInstance) {
+    const API_URL = 'https://jsonplaceholder.typicode.com/users';
+
+    app.get('/users', async (request, reply) => {
+        try {
+            const { data } = await axios.get(API_URL);
+            reply.send(data);
+        } catch (error) {
+            reply.status(500).send({ error: 'Erro ao buscar os usuários.' });
+        }
+    });
+}</code></pre>
+        </section>
+        <section>
+            <h2>Conclusão</h2>
+            <p>Este guia mostrou como criar uma API REST eficiente com Fastify e TypeScript. Explore mais recursos para melhorar seu projeto!</p>
+        </section>
+    </main>
+    <footer>
+        &copy; 2025, Criado por Pedro Nguinamau
+    </footer>
+</body>
+</html>
